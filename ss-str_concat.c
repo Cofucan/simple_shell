@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <stdarg.h>
 
 /**
  * str_concat - concatenates two strings to new array
@@ -51,6 +52,84 @@ char *str_concat(char *s1, char *s2)
 	{
 		for (c = 0; s2[c]; c++, u++)
 			joined[u] = s2[c];
+	}
+
+	return (joined);
+}
+
+
+char *strs_concat(int args_no, char *s1, char *s2, ...)
+{
+	int c, d, u = 0;
+	int len = 0;
+	char *str, *joined;
+	va_list args_main, args_copy;
+
+	/*
+	 * If string is NULL or empty, length of array should be 1.
+	 * We must first check for null before any other check,
+	 * else we would get segmetation error if string happens to be null
+	 */
+
+	if (!s1 || !s1[0])
+		len = 1;
+	else
+		len += _strlen(s1); /* Add length of first string */
+
+	if (!s2 || !s2[0])
+		len++;
+	else
+		len += _strlen(s2); /* Add length of second string */
+
+	/* Get length of each extra argument */
+	if (args_no > 2)
+	{
+		va_start(args_main, s2);		/* Store variable arguments */
+		va_copy(args_copy, args_main);	/* Make a copy of arguments */
+
+		/* Go over the arguments the first time */
+		for (c = 0; c < (args_no - 2); c++)
+		{
+			str = va_arg(args_main, char *);
+			len += (!str || !str[0]) ? 1 : _strlen(str);
+		}
+
+		va_end(args_main);				/* End the first arguments' counter */
+	}
+
+	/* Allocate memory for new array, including null terminaror */
+	joined = malloc((sizeof(char) * len) + 1);
+
+	/* If allocation fails */
+	if (!joined)
+		return (NULL);
+
+	/* Copy characters from first string */
+	if (s1)
+		for (c = 0; s1[c]; c++, u++)
+			joined[u] = s1[c];
+
+	/* Copy characters from second string. */
+	if (s2)
+		for (c = 0; s2[c]; c++, u++)
+			joined[u] = s2[c];
+
+	/* Copy charcters from each of the extra arguments */
+	if (args_no > 2)
+	{
+		va_start(args_main, s2);		/* Reset the arguments list counter */
+
+		/* Go over the arguments the second time */
+		for (d = 0; d < (args_no - 2); d++)
+		{
+			str = va_arg(args_copy, char *);
+			for (c = 0; str[c]; c++, u++)
+				joined[u] = str[c];
+		}
+
+		/* Clean up argument lists */
+		va_end(args_main);
+		va_end(args_copy);
 	}
 
 	return (joined);
