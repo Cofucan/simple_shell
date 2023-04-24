@@ -5,6 +5,9 @@
 
 /**
  * main - super simple shell program that runs shell commands
+ * @argc: The number of arguments passed to the program.
+ * @argv: Vector containing arguments passed.
+ * @env: Environment variables from the current system.
  *
  * When this program is compiled and exeecuted, creates a child process
  * and runs the getline system call and reads the input from stdin.
@@ -99,6 +102,17 @@ int main(int argc, char *argv[], char **env)
 	return (0);
 }
 
+/**
+ * handle_builtin - handles the built-in commands
+ * @args: Arguments passed to the shell program.
+ * @no_of_args: Number of arguments passed.
+ *
+ * This function handles the different different builtin
+ * commands that may be passed into the terminal.
+ *
+ * Return: True if a built-in command is detected, else false.
+ */
+
 bool handle_builtin(char **args, size_t no_of_args)
 {
 	/* If the exit command is entered */
@@ -106,7 +120,7 @@ bool handle_builtin(char **args, size_t no_of_args)
 		handle_exit(args, no_of_args);
 
 	/* If the env command is entered */
-	else if ((_strncmp(args[0], "env", 3) == 0) || 
+	else if ((_strncmp(args[0], "env", 3) == 0) ||
 		(_strncmp(args[0], "printenv", 8 == 0)))
 	{
 		handle_env(args, no_of_args);
@@ -116,13 +130,25 @@ bool handle_builtin(char **args, size_t no_of_args)
 	return (false);
 }
 
+/**
+ * execute - handles the exeution of other processes
+ * @arguments: Arguments passed to the shell program.
+ * @no_of_args: Number of arguments passed.
+ * @envp: Environment variables from the current system.
+ *
+ * This function handles execution of an executable file
+ * if it is detected in the current directory of in PATH.
+ *
+ * Return: Nothing if successful or error if it fails.
+ */
+
 int execute(char **arguments, int no_of_args, char **envp)
 {
 	execve(arguments[0], arguments, envp);
 
 	/* If execve failed */
 	free_vector(arguments, no_of_args);
-	perror("Error (execve)"); 
+	perror("Error (execve)");
 	exit(EXIT_FAILURE);
 }
 

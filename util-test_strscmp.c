@@ -33,7 +33,6 @@ int main(int argc, char *argv[], char **env)
 
 void print_env(void)
 {
-	extern char **environ;
 	int s;
 
 	for (s = 0; environ[s]; s++)

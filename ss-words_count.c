@@ -1,9 +1,12 @@
 #include "shell.h"
 
 /**
- * count_words - counts the number of words in a string specified by
+ * words_count - counts the number of words in a string specified by
  *				 one or more delimiter. It also counts the length of
  *				 each word and stores them in an array.
+ * @str: String to be parsed.
+ * @separators: One or more delimiters to separate the string by.
+ * @arr: Pointer to array where the word lengths will be stored.
  *
  * Return: Number of words.
  */

@@ -1,5 +1,13 @@
 #include "shell.h"
 
+/**
+ * check_file_status - checks if a file exists
+ * @pathname: Path to the file.
+ * @statbuf: Stores information on the file if it is found.
+ *
+ * Return: True if it is found, else false.
+ */
+
 bool check_file_status(char *pathname, struct stat *statbuf)
 {
 	int stat_return;
@@ -12,6 +20,17 @@ bool check_file_status(char *pathname, struct stat *statbuf)
 
 	return (false);
 }
+
+/**
+ * check_file_in_path - checks if a file exists PATH
+ * @filename: Name of the file to be checked.
+ * @statbuf: Stores information on the file if it is found.
+ *
+ * This function search for a file in PATH. If it is found,
+ * it concatenates the absolute path with the file name.
+ *
+ * Return: The full path of the file or NULL if not found.
+ */
 
 char *check_file_in_path(char *filename, struct stat *statbuf)
 {

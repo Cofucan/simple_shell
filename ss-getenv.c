@@ -1,20 +1,26 @@
 #include "shell.h"
 
+/**
+ * _getenv - gets the value of a speficied environment variable
+ * @key: Variable to look for
+ *
+ * Return: Pointer to start index of the value.
+ */
+
 char *_getenv(char *key)
 {
-    extern char **environ;	/* Access to the environment list */
-    char **ptr = environ;	/* Set another pointer to env list */
-    size_t namelen = _strlen(key);
+	char **ptr = environ;	/* Set another pointer to env list */
+	size_t namelen = _strlen(key);
 
-    while (*ptr)
+	while (*ptr)
 	{
-        if (_strncmp(*ptr, key, namelen) == 0 && (*ptr)[namelen] == '=')
+		if (_strncmp(*ptr, key, namelen) == 0 && (*ptr)[namelen] == '=')
 		{
 			/* Return the value of the environment variable */
-            return (&((*ptr)[namelen + 1]));
-        }
-        ptr++;
-    }
+			return (&((*ptr)[namelen + 1]));
+		}
+		ptr++;
+	}
 
-    return (NULL); /* If environment variable not found */
+	return (NULL); /* If environment variable not found */
 }

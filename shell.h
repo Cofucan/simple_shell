@@ -17,6 +17,8 @@
 
 #define MAX_WORD_COUNT 100
 
+extern char **environ;
+
 int execute(char **arguments, int no_of_args, char **envp);
 int words_count(char *str, char *delim, unsigned int *arr);
 void handle_error(pid_t pid);

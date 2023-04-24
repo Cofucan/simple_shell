@@ -57,6 +57,14 @@ char *str_concat(char *s1, char *s2)
 	return (joined);
 }
 
+/**
+ * strs_concat - concatenates two or more strings to new array
+ * @args_no: Number of strings to be joined.
+ * @s1: First string
+ * @s2: Second string
+ *
+ * Return: Pointer to newly allocated memory containing concatenated string.
+ */
 
 char *strs_concat(int args_no, char *s1, char *s2, ...)
 {

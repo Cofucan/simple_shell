@@ -4,6 +4,9 @@
  * split_string - splits a string into words specified by a delimiter(s),
  *				  storing the pointer to each word (null-terminated)
  *				  in an array.
+ * @str: String to be split.
+ * @separators: One or more delimiters by which to split the string.
+ * @word_count: Number of words in the string (separated by the delimiters).
  *
  * Return: Vector of pointers to strings (words).
  *		   Remember to free vector after use.
