@@ -14,7 +14,7 @@
 
 int main(int argc, char *argv[], char **env)
 {
-	char *buff = NULL, *prompt = "$ ";
+	char *fullpath = NULL, *buff = NULL, *prompt = "$ ";
 	char **args;
 	size_t no_of_args, buff_size = 0;
 	ssize_t bytes;
@@ -37,7 +37,7 @@ int main(int argc, char *argv[], char **env)
 		if (bytes == -1)
 		{
 			perror("Error (getline)");
-			free(buff); /* If getline fails, free memory */
+			free(buff);
 			exit(EXIT_FAILURE);
 		}
 
@@ -45,13 +45,26 @@ int main(int argc, char *argv[], char **env)
 		if (buff[bytes - 1] == '\n')
 			buff[bytes - 1] = '\0';
 
+		/* Split the arguments string into individual words */
 		args = split_string(buff, " ", &no_of_args);
 
 		/* Check if executable exists */
 		if (!check_file_status(args[0], &statbuf))
 		{
-			perror("Error (file status)");
-			continue;
+			/* Look for executable in the paths */
+			fullpath = check_file_in_path(args[0], &statbuf);
+			if (!fullpath)
+			{
+				perror("Error (file status)");
+				free_vector(args, no_of_args);
+				continue;
+			}
+			else
+			{
+				/* Replace the first argument with the full path if exists */
+				free(args[0]);
+				args[0] = fullpath;
+			}
 		}
 
 		/* Create a child process and use it to execute the command */
@@ -59,6 +72,7 @@ int main(int argc, char *argv[], char **env)
 		if (wpid == -1) /* If fork fails */
 		{
 			perror("Error (fork)");
+			free_vector(args, no_of_args);
 			exit(EXIT_FAILURE);
 		}
 		if (wpid == 0) /* Child process */
@@ -68,8 +82,12 @@ int main(int argc, char *argv[], char **env)
 		if (waitpid(wpid, &wstatus, 0) == -1)
 		{
 			perror("Error (wait)");
+			free_vector(args, no_of_args);
 			exit(EXIT_FAILURE);
 		}
+
+		/* Free the args vector after the child process ends */
+		free_vector(args, no_of_args);
 	}
 
 	free(buff);
