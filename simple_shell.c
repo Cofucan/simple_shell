@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -48,6 +49,9 @@ int main(int argc, char *argv[], char **env)
 		/* Split the arguments string into individual words */
 		args = split_string(buff, " ", &no_of_args);
 
+		/* Handle any built-in command that is entered */
+		handle_builtin(args, no_of_args);
+
 		/* Check if executable exists */
 		if (!check_file_status(args[0], &statbuf))
 		{
@@ -92,6 +96,13 @@ int main(int argc, char *argv[], char **env)
 
 	free(buff);
 	return (0);
+}
+
+void handle_builtin(char **args, size_t no_of_args)
+{
+	/* If the exit command is entered */
+	if (_strncmp(args[0], "exit", 4) == 0)
+		handle_exit(args, no_of_args);
 }
 
 int execute(char **arguments, int no_of_args, char **envp)
