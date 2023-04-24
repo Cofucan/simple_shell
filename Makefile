@@ -7,4 +7,4 @@ ssc:
 	gcc $(CFLAGS) ss-*.c simple-shell.c -o simple_shell -g
 
 ssw:
-	gcc ss-*.c simple-shell.c -o simple_shell -g
+	gcc ss-*.c simple_shell.c -o simple_shell -g
