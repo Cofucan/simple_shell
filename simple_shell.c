@@ -50,7 +50,8 @@ int main(int argc, char *argv[], char **env)
 		args = split_string(buff, " ", &no_of_args);
 
 		/* Handle any built-in command that is entered */
-		handle_builtin(args, no_of_args);
+		if (handle_builtin(args, no_of_args))
+			continue;
 
 		/* Check if executable exists */
 		if (!check_file_status(args[0], &statbuf))
@@ -98,11 +99,21 @@ int main(int argc, char *argv[], char **env)
 	return (0);
 }
 
-void handle_builtin(char **args, size_t no_of_args)
+bool handle_builtin(char **args, size_t no_of_args)
 {
 	/* If the exit command is entered */
 	if (_strncmp(args[0], "exit", 4) == 0)
 		handle_exit(args, no_of_args);
+
+	/* If the env command is entered */
+	else if ((_strncmp(args[0], "env", 3) == 0) || 
+		(_strncmp(args[0], "printenv", 8 == 0)))
+	{
+		handle_env(args, no_of_args);
+		return (true);
+	}
+
+	return (false);
 }
 
 int execute(char **arguments, int no_of_args, char **envp)

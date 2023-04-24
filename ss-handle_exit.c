@@ -1,5 +1,4 @@
 #include "shell.h"
-#include <stdlib.h>
 
 void handle_exit(char **exit_args, size_t no_of_args)
 {
