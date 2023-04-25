@@ -18,6 +18,7 @@
 
 int main(int argc, char *argv[], char **env)
 {
+	char newline = '\n';
 	char *fullpath = NULL, *buff = NULL, *prompt = "$ ";
 	char **args;
 	size_t no_of_args, buff_size = 0;
@@ -37,8 +38,15 @@ int main(int argc, char *argv[], char **env)
 		write(STDOUT_FILENO, prompt, 2);
 
 		/* Read data from standard input */
-		bytes = getline(&buff, &buff_size, stdin);
-		if (bytes == -1)
+		bytes = _getline(&buff, &buff_size, stdin);
+
+		if (bytes == 0) /* Handle end-of-file condition */
+		{
+			write(STDOUT_FILENO, &newline, 1);
+			free(buff);
+			exit(EXIT_SUCCESS);
+		}
+		if (bytes == -1) /* Handle getline error */
 		{
 			perror("Error (getline)");
 			free(buff);
@@ -124,6 +132,12 @@ bool handle_builtin(char **args, size_t no_of_args)
 		(_strncmp(args[0], "printenv", 8 == 0)))
 	{
 		handle_env(args, no_of_args);
+		return (true);
+	}
+	/* If the cd command is entered */
+	else if (_strncmp(args[0], "cd", 2) == 0)
+	{
+		handle_cd(args, no_of_args);
 		return (true);
 	}
 
