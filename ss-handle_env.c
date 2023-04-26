@@ -1,6 +1,4 @@
 #include "shell.h"
-#include <stdio.h>
-#include <unistd.h>
 
 /**
  * handle_env - handles the built-in commands relating to env

@@ -16,7 +16,8 @@
 int main(int argc, char *argv[], char **env)
 {
 	char newline = '\n';
-	char *fullpath = NULL, *buff = NULL;
+	char *fullpath = NULL, *buff = NULL, *command = NULL;
+	char *buff_ptr = NULL;
 	char **args;
 	size_t no_of_args, buff_size = 0;
 	ssize_t bytes;
@@ -27,35 +28,45 @@ int main(int argc, char *argv[], char **env)
 
 	while (1 && !from_pipe)
 	{
-		/* Check if data is piped into program or entered from terminal */
-		if (isatty(STDIN_FILENO) == 0)
-			from_pipe = true;
-
-		/* Print the prompt sign `$ ` on the terminal */
-		write(STDOUT_FILENO, "$ ", 2);
-
-		/* Read data from standard input */
-		bytes = _getline(&buff, &buff_size, stdin);
-
-		if (bytes == 0) /* Handle end-of-file condition */
+		if (!command)
 		{
-			write(STDOUT_FILENO, &newline, 1);
-			free(buff);
-			exit(EXIT_SUCCESS);
-		}
-		if (bytes == -1) /* Handle getline error */
-		{
-			perror("Error (getline)");
-			free(buff);
-			exit(EXIT_FAILURE);
+			/* Check if data is piped into program or entered from terminal */
+			if (isatty(STDIN_FILENO) == 0)
+				from_pipe = true;
+
+			/* Print the prompt sign `$ ` on the terminal */
+			write(STDOUT_FILENO, "$ ", 2);
+
+			/* Read data from standard input */
+			bytes = _getline(&buff, &buff_size, stdin);
+
+			if (bytes == 0) /* Handle end-of-file condition */
+			{
+				write(STDOUT_FILENO, &newline, 1);
+				free(buff);
+				exit(EXIT_SUCCESS);
+			}
+			if (bytes == -1) /* Handle getline error */
+			{
+				perror("Error (getline)");
+				free(buff);
+				exit(EXIT_FAILURE);
+			}
+
+			/* Replace the newline character with a null terminator */
+			if (buff[bytes - 1] == '\n')
+				buff[bytes - 1] = '\0';
 		}
 
-		/* Replace the newline character with a null terminator */
-		if (buff[bytes - 1] == '\n')
-			buff[bytes - 1] = '\0';
+		if (!buff_ptr)
+			buff_ptr = buff;
+		/* Handle command separators */
+		command = check_separator(buff, &buff_ptr);
+		if (!command)
+			continue;
 
 		/* Split the arguments string into individual words */
-		args = split_string(buff, " ", &no_of_args);
+		args = split_string(command, " ", &no_of_args);
 
 		/* Handle any built-in command that is entered */
 		if (handle_builtin(args, no_of_args))
