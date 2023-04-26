@@ -11,7 +11,7 @@
  * Return: Number of characters in the string.
  */
 
-int _strlen(char *s)
+int _strlen(const char *s)
 {
 	int count = 0;
 

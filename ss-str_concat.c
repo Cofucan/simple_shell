@@ -66,7 +66,7 @@ char *str_concat(char *s1, char *s2)
  * Return: Pointer to newly allocated memory containing concatenated string.
  */
 
-char *strs_concat(int args_no, char *s1, char *s2, ...)
+char *strs_concat(int args_no, const char *s1, const char *s2, ...)
 {
 	int c, d, u = 0;
 	int len = 0;

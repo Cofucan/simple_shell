@@ -140,7 +140,7 @@ char *_getline_wip()
 			line = realloc(line, line_size + line_length + 1);
 
 		/* Copy the line from the buffer to the line buffer */
-		memcpy(line + line_size, buffer_pos, line_length);
+		_memcpy(line + line_size, buffer_pos, line_length);
 
 		/* Update the line size to include the length of the new line */
 		line_size += line_length;

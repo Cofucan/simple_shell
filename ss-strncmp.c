@@ -11,7 +11,7 @@
  * Return: negative, positive or zero integer.
  */
 
-int _strncmp(char *s1, char *s2, size_t n)
+int _strncmp(const char *s1, const char *s2, size_t n)
 {
 	int u, diff;
 
