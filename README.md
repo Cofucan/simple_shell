@@ -9,5 +9,7 @@
 
 !IMPORTANT
 - Remember to free the new environ you allocated when updating the env variables.
+- Try to see if you can free environ before the program ends.
+- Try to see if you can use VS Code to see what has been freed or not.
 
 By Uche Ofia and Nousair.

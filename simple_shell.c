@@ -16,7 +16,7 @@
 int main(int argc, char *argv[], char **env)
 {
 	char newline = '\n';
-	char *fullpath = NULL, *buff = NULL, *prompt = "$ ";
+	char *fullpath = NULL, *buff = NULL;
 	char **args;
 	size_t no_of_args, buff_size = 0;
 	ssize_t bytes;
@@ -32,7 +32,7 @@ int main(int argc, char *argv[], char **env)
 			from_pipe = true;
 
 		/* Print the prompt sign `$ ` on the terminal */
-		write(STDOUT_FILENO, prompt, 2);
+		write(STDOUT_FILENO, "$ ", 2);
 
 		/* Read data from standard input */
 		bytes = _getline(&buff, &buff_size, stdin);
@@ -124,9 +124,11 @@ bool handle_builtin(char **args, size_t no_of_args)
 	if (_strncmp(args[0], "exit", 4) == 0)
 		handle_exit(args, no_of_args);
 
-	/* If the env command is entered */
-	else if ((_strncmp(args[0], "env", 3) == 0) ||
-		(_strncmp(args[0], "printenv", 8 == 0)))
+	/* Handle the env, setenv and unsetenv commands */
+	else if ((_strncmp(args[0], "env", 3) == 0)
+		|| (_strncmp(args[0], "printenv", 8) == 0)
+		|| (_strncmp(args[0], "setenv", 6) == 0)
+		|| (_strncmp(args[0], "unsetenv", 8) == 0))
 	{
 		handle_env(args, no_of_args);
 		return (true);
@@ -137,7 +139,6 @@ bool handle_builtin(char **args, size_t no_of_args)
 		handle_cd(args, no_of_args);
 		return (true);
 	}
-
 	return (false);
 }
 
