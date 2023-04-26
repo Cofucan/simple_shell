@@ -1,11 +1,12 @@
 #include "shell.h"
 
 /**
- * handle_exit - handles the `exit` built-in command
- * @exit_args: Arrguments for the exit command.
- * @no_of_args: Number of arguments passed.
+ * check_separator - handles the 3 separators `;`, `&&`, `||`
+ * @str: String to be checked.
+ * @str_ptr: Pointer to the same string, used for traversing the string.
  *
- * Return: Nothing
+ * Return: One word (delimiter separated) at a time,
+ *		   similar to strtok().
  */
 
 char *check_separator(char *str, char **str_ptr)
@@ -62,7 +63,7 @@ char *check_separator(char *str, char **str_ptr)
 				current_command[x] = str[start_idx];
 			current_command[x] = '\0';
 			idx += 4;
-			(*str_ptr)+=4;
+			(*str_ptr) += 4;
 			break;
 		}
 

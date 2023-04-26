@@ -175,6 +175,13 @@ int execute(char **arguments, int no_of_args, char **envp)
 	exit(EXIT_FAILURE);
 }
 
+/**
+ * handle_error - handles errors
+ * @pid: Error number type
+ *
+ * Return: Nothing
+ */
+
 void handle_error(pid_t pid)
 {
 	if (pid == -1)

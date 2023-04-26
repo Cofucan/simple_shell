@@ -46,7 +46,6 @@ int _strlen(const char *s);
 char *_getenv(char *name);
 void _printenv(void);
 int _atoi(char *s);
-ssize_t _getline(char **restrict lineptr, size_t *restrict n,
-						FILE *restrict stream);
+ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
 
 #endif /* !DEBUG */

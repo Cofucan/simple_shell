@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <stddef.h>
 
 /**
  * _strncmp - This program compares the first n characters
@@ -13,7 +14,8 @@
 
 int _strncmp(const char *s1, const char *s2, size_t n)
 {
-	int u, diff;
+	int diff;
+	size_t u;
 
 	for (u = 0; u < n; u++)
 	{

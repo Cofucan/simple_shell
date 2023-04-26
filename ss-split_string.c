@@ -14,12 +14,10 @@
 
 char **split_string(char *str, char *separators, size_t *word_count)
 {
-	int c, v;
+	int v, no_of_words;
 	char **words;
 	char *str_ptr = str;
-	bool start = false;
-	unsigned int no_of_words;
-	unsigned int word_sizes[MAX_WORD_COUNT];
+	unsigned int c, word_sizes[MAX_WORD_COUNT];
 
 	set_zeros(word_sizes, MAX_WORD_COUNT);
 	no_of_words = words_count(str, separators, word_sizes);

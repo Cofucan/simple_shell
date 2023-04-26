@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <stddef.h>
 
 /**
  * set_zeros - sets all the bytes of an integer array to 0
@@ -10,7 +11,7 @@
 
 void set_zeros(unsigned int *arr, size_t size)
 {
-	int x;
+	size_t x;
 
 	for (x = 0; x < size; x++)
 		arr[x] = 0;

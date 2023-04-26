@@ -34,7 +34,10 @@ int words_count(char *str, char *separators, unsigned int *arr)
 
 	/* If the string has only one character */
 	if (!*(str_copy + 1))
+	{
+		arr[0] = 1;
 		return (1);
+	}
 
 	for (c = 1; str_copy[c]; c++)
 	{

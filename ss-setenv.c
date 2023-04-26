@@ -2,55 +2,62 @@
 
 int _setenv(const char *name, const char *value, int overwrite)
 {
+	int i, num_environ, len_name;
 	char *new_var;
-	bool exists = false;
+	char **new_environ, **envp;
 	unsigned int env_index = 0;
+	bool exists = false;
 
-    if (name == NULL || name[0] == '\0' || strchr(name, '=') != NULL || value == NULL)
+	if (name == NULL || name[0] == '\0'
+		|| strchr(name, '=') != NULL
+		|| value == NULL)
 	{
-        return -1;  /* Invalid arguments */
-    }
+		return (-1);  /* Invalid arguments */
+	}
 
-    /* Check if the environment variable already exists */
-    int len_name = _strlen(name);
-    int len_value = _strlen(value);
-    char **envp = environ;
-    while (*envp != NULL)
+	/* Check if the environment variable already exists */
+	len_name = _strlen(name);
+	envp = environ;
+
+	while (*envp != NULL)
 	{
-        if (_strncmp(*envp, name, len_name) == 0 && (*envp)[len_name] == '=')
+		if (_strncmp(*envp, name, len_name) == 0 && (*envp)[len_name] == '=')
 		{
-            if (!overwrite)
+			if (!overwrite)
 			{
-                return (0);  /* Already exists and overwrite is not allowed */
-            }
+				return (0);  /* Already exists and overwrite is not allowed */
+			}
 			exists = true;
-            break;  /* Found and overwrite is allowed */
-        }
+			break;	/* Found and overwrite is allowed */
+		}
 		env_index++;
-        envp++;
-    }
+		envp++;
+	}
 
 	/* Count the number of variables available */
-    int num_environ = 0;
-    while (environ[num_environ] != NULL)
-        num_environ++;
+	num_environ = 0;
 
-    /* Allocate memory for the new environment variable vector */
-    char **new_environ = (char **) malloc((num_environ + 1 + exists) * sizeof(char *));
-    if (new_environ == NULL)
+	while (environ[num_environ] != NULL)
+		num_environ++;
+
+	/* Allocate memory for the new environment variable vector */
+	new_environ = (char **) malloc((num_environ + 1 + exists) * sizeof(char *));
+
+	if (new_environ == NULL)
 	{
-        return (-1);  // Memory allocation error
-    }
+		return (-1);  /* Memory allocation error */
+	}
 
-    /* Copy the old environment variables */
-    int i = 0;
-    while (environ[i] != NULL)
+	/* Copy the old environment variables */
+	i = 0;
+
+	while (environ[i] != NULL)
 	{
-        new_environ[i] = environ[i];
-        i++;
-    }
+		new_environ[i] = environ[i];
+		i++;
+	}
 
-    /* Add the new environment variable, including equal sign and null term */
+	/* Add the new environment variable, including equal sign and null term */
 	new_var = strs_concat(3, name, "=", value);
 
 	if (!exists)
@@ -64,8 +71,8 @@ int _setenv(const char *name, const char *value, int overwrite)
 		new_environ[i] = NULL;
 	}
 
-    /* Set the new environment variables */
-    environ = new_environ;
+	/* Set the new environment variables */
+	environ = new_environ;
 
-    return (0);  /* Success */
+	return (0);  /* Success */
 }
