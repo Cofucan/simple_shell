@@ -1,7 +1,4 @@
 #include "shell.h"
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 /**
  * main - super simple shell program that runs shell commands
