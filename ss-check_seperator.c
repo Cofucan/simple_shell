@@ -40,18 +40,40 @@ char *check_separator(char *str, char **str_ptr)
 				current_command[x] = str[start_idx];
 			current_command[x] = '\0';
 			idx += 3;
-			(*str_ptr)+=3;
+			(*str_ptr) += 3;
+			break;
+		}
+		else if (_strncmp(*str_ptr, " && ", 4) == 0)
+		{
+			sep_found = 2;
+			command_size = idx - start_idx;
+			for (x = 0; x < (command_size); x++, start_idx++)
+				current_command[x] = str[start_idx];
+			current_command[x] = '\0';
+			idx += 4;
+			(*str_ptr) += 4;
+			break;
+		}
+		else if (_strncmp(*str_ptr, " || ", 4) == 0)
+		{
+			sep_found = 2;
+			command_size = idx - start_idx;
+			for (x = 0; x < (command_size); x++, start_idx++)
+				current_command[x] = str[start_idx];
+			current_command[x] = '\0';
+			idx += 4;
+			(*str_ptr)+=4;
 			break;
 		}
 
 	if (!str[idx])
 	{
+		sep_found = 0;
 		command_size = idx - start_idx;
 		for (x = 0; x < (command_size); x++, start_idx++)
 			current_command[x] = str[start_idx];
 		current_command[x] = '\0';
 		*str_ptr = NULL;
-		sep_found = 0;
 	}
 
 	return (current_command);
