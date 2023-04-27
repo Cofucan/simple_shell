@@ -35,7 +35,7 @@ bool check_file_status(char *pathname, struct stat *statbuf)
 char *check_file_in_path(char *filename, struct stat *statbuf)
 {
 	size_t s, no_of_paths;
-	char *full_path;
+	char *full_path = NULL;
 	char *current_path = _getenv("PATH");
 	char **paths = split_string(current_path, ":", &no_of_paths);
 
@@ -43,6 +43,8 @@ char *check_file_in_path(char *filename, struct stat *statbuf)
 	for (s = 0; s < no_of_paths; s++)
 	{
 		/* Concatenate the path with the executable name */
+		if (full_path)
+			free(full_path);
 		full_path = strs_concat(3, paths[s], "/", filename);
 
 		if (check_file_status(full_path, statbuf))

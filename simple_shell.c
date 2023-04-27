@@ -15,7 +15,6 @@
 
 int main(int argc, char *argv[], char **env)
 {
-	char newline = '\n';
 	char *fullpath = NULL, *buff = NULL, *command = NULL;
 	char *buff_ptr = NULL;
 	char **args;
@@ -42,13 +41,14 @@ int main(int argc, char *argv[], char **env)
 
 			if (bytes == 0) /* Handle end-of-file condition */
 			{
-				write(STDOUT_FILENO, &newline, 1);
+				write(STDOUT_FILENO, "\n", 1);
 				free(buff);
 				exit(EXIT_SUCCESS);
 			}
 			if (bytes == -1) /* Handle getline error */
 			{
-				perror("Error (getline)");
+				write(STDERR_FILENO, argv[0], _strlen(argv[0]));
+				perror(": 1");
 				free(buff);
 				exit(EXIT_FAILURE);
 			}
@@ -60,6 +60,7 @@ int main(int argc, char *argv[], char **env)
 
 		if (!buff_ptr)
 			buff_ptr = buff;
+
 		/* Handle command separators */
 		command = check_separator(buff, &buff_ptr);
 		if (!command)
@@ -69,17 +70,19 @@ int main(int argc, char *argv[], char **env)
 		args = split_string(command, " ", &no_of_args);
 
 		/* Handle any built-in command that is entered */
-		if (handle_builtin(args, no_of_args))
+		if (handle_builtin(args, argv[0], no_of_args, buff))
 			continue;
 
 		/* Check if executable exists */
 		if (!check_file_status(args[0], &statbuf))
 		{
+			perror(": 9");
 			/* Look for executable in the paths */
 			fullpath = check_file_in_path(args[0], &statbuf);
 			if (!fullpath)
 			{
-				perror("Error (file status)");
+				write(STDERR_FILENO, argv[0], _strlen(argv[0]));
+				perror(": 1");
 				free_vector(args, no_of_args);
 				continue;
 			}
@@ -95,7 +98,8 @@ int main(int argc, char *argv[], char **env)
 		wpid = fork();
 		if (wpid == -1) /* If fork fails */
 		{
-			perror("Error (fork)");
+			write(STDERR_FILENO, argv[0], _strlen(argv[0]));
+			perror(": 1");
 			free_vector(args, no_of_args);
 			exit(EXIT_FAILURE);
 		}
@@ -105,7 +109,8 @@ int main(int argc, char *argv[], char **env)
 		/* Parent process should wait for the child process to finish */
 		if (waitpid(wpid, &wstatus, 0) == -1)
 		{
-			perror("Error (wait)");
+			write(STDERR_FILENO, argv[0], _strlen(argv[0]));
+			perror(": 1");
 			free_vector(args, no_of_args);
 			exit(EXIT_FAILURE);
 		}
@@ -122,6 +127,7 @@ int main(int argc, char *argv[], char **env)
  * handle_builtin - handles the built-in commands
  * @args: Arguments passed to the shell program.
  * @no_of_args: Number of arguments passed.
+ * @buffer: Original buffer where getline stored the data.
  *
  * This function handles the different different builtin
  * commands that may be passed into the terminal.
@@ -129,11 +135,11 @@ int main(int argc, char *argv[], char **env)
  * Return: True if a built-in command is detected, else false.
  */
 
-bool handle_builtin(char **args, size_t no_of_args)
+bool handle_builtin(char **args, char *prog, size_t no_of_args, char *buffer)
 {
 	/* If the exit command is entered */
 	if (_strncmp(args[0], "exit", 4) == 0)
-		handle_exit(args, no_of_args);
+		handle_exit(args, no_of_args, buffer);
 
 	/* Handle the env, setenv and unsetenv commands */
 	else if ((_strncmp(args[0], "env", 3) == 0)
@@ -147,7 +153,7 @@ bool handle_builtin(char **args, size_t no_of_args)
 	/* If the cd command is entered */
 	else if (_strncmp(args[0], "cd", 2) == 0)
 	{
-		handle_cd(args, no_of_args);
+		handle_cd(args, no_of_args, prog);
 		return (true);
 	}
 	return (false);

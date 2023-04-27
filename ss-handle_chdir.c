@@ -5,11 +5,12 @@
  * handle_cd - handles the `cd` built-in command
  * @cd_args: Arrguments for the cd command.
  * @no_of_args: Number of arguments passed.
+ * @prog_name: Name of the current program.
  *
  * Return: Nothing
  */
 
-void handle_cd(char **cd_args, size_t no_of_args)
+void handle_cd(char **cd_args, size_t no_of_args, char *prog_name)
 {
 	/* Declare them as static so they will persist in memory */
 	static char last_dir[BUFFER_SIZE]; /* Directory before change */
@@ -33,7 +34,10 @@ void handle_cd(char **cd_args, size_t no_of_args)
 	/* Store current directory before changing it. */
 	dir = getcwd(last_dir, BUFFER_SIZE);
 	if (!dir)
-		perror("Error (getcwd)");
+	{
+		write(STDERR_FILENO, prog_name, _strlen(prog_name));
+		perror(": 1");
+	}
 	else
 	{
 		if (prev)
