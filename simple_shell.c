@@ -25,7 +25,7 @@ int main(int argc, char *argv[], char **env)
 	bool from_pipe = false;
 	struct stat statbuf;
 
-	// while ((argc > 0) && !from_pipe)
+	/* while ((argc > 0) && !from_pipe) */
 	while (argc > 0)
 	{
 		if (!command)
