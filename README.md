@@ -11,6 +11,8 @@
 - Remember to free the new environ you allocated when updating the env variables.
 - Try to see if you can free environ before the program ends.
 - Try to see if you can use VS Code to see what has been freed or not.
+- Handle edge case where you press enter without entering anything.
+- Handle edge case where extra line is printed.
 
 By Uche Ofia and Nousair.
 Can23

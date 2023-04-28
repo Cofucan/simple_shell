@@ -1,5 +1,14 @@
 #include "shell.h"
 
+/**
+ * _getline - Reads data from a stream into a buffer.
+ * @lineptr: Address of buffer where the data will be stored.
+ * @n: Address where the size of allocated space will be stored.
+ * @stream: File descriptor form which data will be read.
+ *
+ * Return: Number of bytes read.
+ */
+
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 {
 	/* Declare static variables for the buffer and position in the buffer */
@@ -53,16 +62,14 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 		*n = line_length + 1;	/* Extra byte is for the null terminator */
 
 		/* Allocate or reallocate the line buffer if necessary */
-		if (bytes_read == 0)
-			*lineptr = malloc(line_length + 1);
-		else
+		if (*lineptr == NULL)
 			*lineptr = _realloc(*lineptr, bytes_read, bytes_read + line_length + 1);
 		/* If allocation fails */
 		if (!(*lineptr))
 			return (-1);
 
 		/* Copy the line from the buffer to the lineptr buffer */
-		memcpy(*lineptr + bytes_read, buffer_pos, line_length);
+		_memcpy(*lineptr + bytes_read, buffer_pos, line_length);
 
 		/* Update the line size to include the length of the new line */
 		bytes_read += line_length;

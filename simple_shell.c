@@ -25,7 +25,8 @@ int main(int argc, char *argv[], char **env)
 	bool from_pipe = false;
 	struct stat statbuf;
 
-	while ((argc > 0) && !from_pipe)
+	// while ((argc > 0) && !from_pipe)
+	while (argc > 0)
 	{
 		if (!command)
 		{
@@ -33,8 +34,9 @@ int main(int argc, char *argv[], char **env)
 			if (isatty(STDIN_FILENO) == 0)
 				from_pipe = true;
 
-			/* Print the prompt sign `$ ` on the terminal */
-			write(STDOUT_FILENO, "$ ", 2);
+			if (!from_pipe)
+				/* Print the prompt sign `$ ` on the terminal */
+				write(STDOUT_FILENO, "$ ", 2);
 
 			/* Read data from standard input */
 			bytes = _getline(&buff, &buff_size, stdin);
@@ -76,7 +78,6 @@ int main(int argc, char *argv[], char **env)
 		/* Check if executable exists */
 		if (!check_file_status(args[0], &statbuf))
 		{
-			perror(": 9");
 			/* Look for executable in the paths */
 			fullpath = check_file_in_path(args[0], &statbuf);
 			if (!fullpath)
@@ -126,6 +127,7 @@ int main(int argc, char *argv[], char **env)
 /**
  * handle_builtin - handles the built-in commands
  * @args: Arguments passed to the shell program.
+ * @prog: Name of current program.
  * @no_of_args: Number of arguments passed.
  * @buffer: Original buffer where getline stored the data.
  *

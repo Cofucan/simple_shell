@@ -1,5 +1,16 @@
 #include "shell.h"
 
+/**
+ * _setenv - Enables adding or modifying an environment variable.
+ * @name: Name of the variable to create or modify.
+ * @value: Value to be assigned to the variable.
+ * @overwrite: 0 signifies to only add new variable if it doesn't exist.
+ *			   Positive number signifies to replace the variable if it
+ *			   already exists, or add new one if it doesn't exist.
+ *
+ * Return: 0 on success or -1 on failure.
+ */
+
 int _setenv(const char *name, const char *value, int overwrite)
 {
 	int i, num_environ, len_name;

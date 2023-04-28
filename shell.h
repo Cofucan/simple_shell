@@ -3,6 +3,7 @@
 
 #include <fcntl.h>
 #include <math.h>
+#include <dirent.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -40,6 +41,7 @@ bool is_delimiter(char c, char *delimiters);
 void free_vector(char **vec, int len);
 char *str_concat(char *s1, char *s2);
 void update_pwd(char *new_pwd);
+void set_nulls(char *arr, size_t size);
 char *check_separator(char *str, char **str_ptr);
 void handle_error(pid_t pid);
 int _strlen(const char *s);
