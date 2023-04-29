@@ -32,6 +32,12 @@
 #define USE_STRTOK 0
 #define HIST_FILE_NAME ".ss_history"
 #define HIST_SIZE_MAX 4096
+#define SET_INFO							\
+	{										\
+		NULL, NULL, NULL, 0, 0, 0, 0,		\
+		NULL, NULL, NULL, NULL, NULL,		\
+		0, 0, NULL, 0, 0, 0					\
+	}
 
 extern char **environ;
 
@@ -70,6 +76,7 @@ typedef struct ListNode
  * @fd_read: the file descriptor used for reading line input
  * @hist_lines: the number of lines in the history
  */
+
 typedef struct InfoNode
 {
 	char *arg;
@@ -93,18 +100,12 @@ typedef struct InfoNode
 	int hist_lines;
 } info_s;
 
-#define SET_INFO							\
-	{										\
-		NULL, NULL, NULL, 0, 0, 0, 0,		\
-		NULL, NULL, NULL, NULL, NULL,		\
-		0, 0, NULL, 0, 0, 0					\
-	}
-
 /**
  * struct builtin - contains a builtin string and related function
  * @type: the builtin command flag
  * @func: the function
  */
+
 typedef struct builtin
 {
 	char *type;
@@ -141,11 +142,11 @@ char *_strncpy(char *, char *, int);
 char *_strncat(char *, char *, int);
 char *_strchr(char *, char);
 char *_memset(char *, char, unsigned int);
-void *_realloc(void *, unsigned int, unsigned int);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 char *_getenv(info_s *, const char *);
 char *starts_with(const char *, const char *);
 char *dup_chars(char *, int, int);
-char *check_file_in_path(info_s *, char *, char *);
+char *check_file_in_path(info_s *info, char *pathstr, char *cmd);
 char *change_base(long int, int, int);
 char *read_hist(info_s *info);
 char **get_environ(info_s *);
@@ -161,7 +162,7 @@ void free_vector(char **);
 void print_error(info_s *, char *);
 void handle_comments(char *);
 void free_list(list_s **);
-void check_chain(info_s *, char *, size_t *, size_t, size_t);
+void check_chain(info_s *info, char *buf, size_t *p, size_t i, size_t len);
 int handle_builtin(info_s *);
 bool is_executable(info_s *, char *);
 int loophsh(char **);
