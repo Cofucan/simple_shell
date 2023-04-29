@@ -50,7 +50,7 @@ typedef struct ListNode
 
 /**
  * struct InfoNode - contains simulated arguments for a function pointer,
- * 					 allowing for a consistent function prototype
+ *					 allowing for a consistent function prototype
  * @arg: a string generated from getline that holds arguments
  * @argv: an array of strings generated from @arg
  * @path: the path string for the current command

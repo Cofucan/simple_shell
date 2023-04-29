@@ -2,7 +2,7 @@
 
 /**
  * _getenv - gets the value of an environ variable
- * @info: Structure containing potential arguments. Used to maintain
+ * @info: contains simulated arguments for a function pointer,
  * @name: env var name
  *
  * Return: the value
@@ -10,8 +10,8 @@
 
 char *_getenv(info_s *info, const char *name)
 {
-	list_s *node = info->env;
 	char *p;
+	list_s *node = info->env;
 
 	while (node)
 	{
@@ -25,11 +25,12 @@ char *_getenv(info_s *info, const char *name)
 
 /**
  * check_setenv - Checks if an environment variable has been set.
- * @info: Structure containing potential arguments. Used to maintain
- * constant function prototype.
- * 
+ * @info: contains simulated arguments for a function pointer,
+ * allowing for a consistent function prototype
+ *
  * Return: 0 if set, else 1.
  */
+
 int check_setenv(info_s *info)
 {
 	if (info->argc != 3)
@@ -37,6 +38,7 @@ int check_setenv(info_s *info)
 		puts_err("Incorrect number of arguements\n");
 		return (1);
 	}
+
 	if (_setenv(info, info->argv[1], info->argv[2]))
 		return (0);
 	return (1);
@@ -44,8 +46,8 @@ int check_setenv(info_s *info)
 
 /**
  * check_unsetenv - Remove an environment variable
- * @info: Structure containing potential arguments. Used to maintain
- * constant function prototype.
+ * @info: contains simulated arguments for a function pointer,
+ * allowing for a consistent function prototype
  * Return: Always 0
  */
 int check_unsetenv(info_s *info)
@@ -65,8 +67,8 @@ int check_unsetenv(info_s *info)
 
 /**
  * gather_env - populates env linked list
- * @info: Structure containing potential arguments. Used to maintain
- * constant function prototype.
+ * @info: contains simulated arguments for a function pointer,
+ * allowing for a consistent function prototype
  * Return: Always 0
  */
 int gather_env(info_s *info)
@@ -82,8 +84,8 @@ int gather_env(info_s *info)
 
 /**
  * _printenv - prints the current environment
- * @info: Structure containing potential arguments. Used to maintain
- * constant function prototype.
+ * @info: contains simulated arguments for a function pointer,
+ * allowing for a consistent function prototype
  * Return: Always 0
  */
 int _printenv(info_s *info)

@@ -7,14 +7,15 @@
  */
 void puts_err(char *str)
 {
-    int i = 0;
-    if (!str)
-        return;
-    while (str[i] != '\0')
-    {
-        putchar_err(str[i]);
-        i++;
-    }
+	int i = 0;
+
+	if (!str)
+		return;
+	while (str[i] != '\0')
+	{
+		putchar_err(str[i]);
+		i++;
+	}
 }
 /**
  * putchar_err - writes the character c to stderr
@@ -25,16 +26,17 @@ void puts_err(char *str)
  */
 int putchar_err(char c)
 {
-    static int i;
-    static char buf[BUFFER_SIZE_WRITE];
-    if (c == NEG_ONE || i >= BUFFER_SIZE_WRITE)
-    {
-        write(2, buf, i);
-        i = 0;
-    }
-    if (c != NEG_ONE)
-        buf[i++] = c;
-    return (1);
+	static int i;
+	static char buf[BUFFER_SIZE_WRITE];
+
+	if (c == NEG_ONE || i >= BUFFER_SIZE_WRITE)
+	{
+		write(2, buf, i);
+		i = 0;
+	}
+	if (c != NEG_ONE)
+		buf[i++] = c;
+	return (1);
 }
 /**
  * write_char - writes the character c to given fd
@@ -46,16 +48,17 @@ int putchar_err(char c)
  */
 int write_char(char c, int fd)
 {
-    static int i;
-    static char buf[BUFFER_SIZE_WRITE];
-    if (c == NEG_ONE || i >= BUFFER_SIZE_WRITE)
-    {
-        write(fd, buf, i);
-        i = 0;
-    }
-    if (c != NEG_ONE)
-        buf[i++] = c;
-    return (1);
+	static int i;
+	static char buf[BUFFER_SIZE_WRITE];
+
+	if (c == NEG_ONE || i >= BUFFER_SIZE_WRITE)
+	{
+		write(fd, buf, i);
+		i = 0;
+	}
+	if (c != NEG_ONE)
+		buf[i++] = c;
+	return (1);
 }
 /**
  * write_chars - prints an input string
@@ -66,12 +69,13 @@ int write_char(char c, int fd)
  */
 int write_chars(char *str, int fd)
 {
-    int i = 0;
-    if (!str)
-        return (0);
-    while (*str)
-    {
-        i += write_char(*str++, fd);
-    }
-    return (i);
+	int i = 0;
+
+	if (!str)
+		return (0);
+	while (*str)
+	{
+		i += write_char(*str++, fd);
+	}
+	return (i);
 }

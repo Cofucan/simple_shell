@@ -104,7 +104,7 @@ int read_history(info_s *info)
 
 /**
  * update_history - adds entry to a history linked list
- * @info: Structure containing potential arguments. Used to maintain
+ * @info: contains simulated arguments for a function pointer,
  * @buf: buffer
  * @linecount: the history linecount, hist_lines
  *
@@ -125,7 +125,7 @@ int update_history(info_s *info, char *buf, int linecount)
 
 /**
  * renumber_history - renumbers the history linked list after changes
- * @info: Structure containing potential arguments. Used to maintain
+ * @info: contains simulated arguments for a function pointer,
  *
  * Return: the new hist_lines
  */

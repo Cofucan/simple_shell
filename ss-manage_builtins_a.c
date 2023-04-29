@@ -69,9 +69,9 @@ int print_alias(list_s *node)
 
 /**
  * handle_alias - mimics the alias builtin (man alias)
- * @info: Structure containing potential arguments. Used to maintain
- * constant function prototype.
- *  Return: Always 0
+ * @info: contains simulated arguments for a function pointer,
+ * allowing for a consistent function prototype
+ *	Return: Always 0
  */
 int handle_alias(info_s *info)
 {
@@ -108,23 +108,24 @@ int handle_alias(info_s *info)
  */
 int change_alias(info_s *info)
 {
-    int i;
-    list_s *node;
-    char *p;
-    for (i = 0; i < 10; i++)
+	int i;
+	list_s *node;
+	char *p;
 
-    {
-        node = node_str_start(info->alias, info->argv[0], '=');
-        if (!node)
-            return (0);
-        free(info->argv[0]);
-        p = _strchr(node->str, '=');
-        if (!p)
-            return (0);
-        p = _strdup(p + 1);
-        if (!p)
-            return (0);
-        info->argv[0] = p;
-    }
-    return (1);
+	for (i = 0; i < 10; i++)
+	{
+		node = node_str_start(info->alias, info->argv[0], '=');
+		if (!node)
+			return (0);
+		free(info->argv[0]);
+		p = _strchr(node->str, '=');
+		if (!p)
+			return (0);
+		p = _strdup(p + 1);
+		if (!p)
+			return (0);
+		info->argv[0] = p;
+	}
+
+	return (1);
 }
