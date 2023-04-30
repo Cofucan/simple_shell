@@ -138,7 +138,7 @@ void check_command(info_s *info)
 		else if (*(info->arg) != '\n')
 		{
 			info->status = 127;
-			print_error(info, "command not found\n");
+			print_error(info, "not found\n");
 		}
 	}
 }
